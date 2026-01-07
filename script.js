@@ -2,30 +2,29 @@ let dragged;
 
 document.querySelectorAll(".grid div").forEach(div => {
 
+  // Start dragging
   div.addEventListener("dragstart", e => {
     dragged = e.target;
-    e.dataTransfer.setData("text/plain", ""); // Required for Firefox
+    e.dataTransfer.setData("text/plain", ""); // Required for Firefox & Cypress
     e.target.classList.add("dragging");
   });
 
+  // End dragging
   div.addEventListener("dragend", e => {
     e.target.classList.remove("dragging");
   });
 
+  // Allow drop
   div.addEventListener("dragover", e => {
-    e.preventDefault(); // Allow drop
+    e.preventDefault();
   });
 
+  // Handle drop
   div.addEventListener("drop", e => {
     e.preventDefault();
-    if (dragged === e.target) return;
+    if (dragged === e.target) return; // Prevent swapping with self
 
-    // Swap the entire innerHTML of divs
-    const tempContent = dragged.innerHTML;
-    dragged.innerHTML = e.target.innerHTML;
-    e.target.innerHTML = tempContent;
-
-    // Swap background images (in case they are set via CSS)
+    // Swap background images
     const tempBg = dragged.style.backgroundImage;
     dragged.style.backgroundImage = e.target.style.backgroundImage;
     e.target.style.backgroundImage = tempBg;
