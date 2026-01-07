@@ -27,3 +27,4 @@ document.querySelectorAll(".grid div").forEach(div => {
     // Swap alt text
     const tempAlt = dragged.getAttribute("alt");
      e.target.setAttribute("alt", tempAlt);
+  });
