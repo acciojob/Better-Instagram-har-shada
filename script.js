@@ -4,6 +4,7 @@ document.querySelectorAll(".grid div").forEach(div => {
 
   div.addEventListener("dragstart", e => {
     dragged = e.target;
+    e.dataTransfer.setData("text/plain", ""); // Required for Firefox
     e.target.classList.add("dragging");
   });
 
@@ -12,20 +13,27 @@ document.querySelectorAll(".grid div").forEach(div => {
   });
 
   div.addEventListener("dragover", e => {
-    e.preventDefault();
+    e.preventDefault(); // Allow drop
   });
 
   div.addEventListener("drop", e => {
     e.preventDefault();
     if (dragged === e.target) return;
 
-    // Swap background images
+    // Swap the entire innerHTML of divs
+    const tempContent = dragged.innerHTML;
+    dragged.innerHTML = e.target.innerHTML;
+    e.target.innerHTML = tempContent;
+
+    // Swap background images (in case they are set via CSS)
     const tempBg = dragged.style.backgroundImage;
     dragged.style.backgroundImage = e.target.style.backgroundImage;
     e.target.style.backgroundImage = tempBg;
 
-    // Swap alt text
+    // Swap alt attributes
     const tempAlt = dragged.getAttribute("alt");
-     e.target.setAttribute("alt", tempAlt);
+    dragged.setAttribute("alt", e.target.getAttribute("alt"));
+    e.target.setAttribute("alt", tempAlt);
   });
+
 });
