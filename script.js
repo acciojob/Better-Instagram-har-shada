@@ -28,3 +28,4 @@ document.querySelectorAll(".grid div").forEach(div => {
     const tempAlt = dragged.getAttribute("alt");
      e.target.setAttribute("alt", tempAlt);
   });
+});
